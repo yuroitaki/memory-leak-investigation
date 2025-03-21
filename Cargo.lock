@@ -2687,8 +2687,8 @@ dependencies = [
 
 [[package]]
 name = "notary-client"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "derive_builder 0.12.0",
  "futures",
@@ -2706,8 +2706,8 @@ dependencies = [
 
 [[package]]
 name = "notary-server"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "async-tungstenite 0.28.2",
  "axum",
@@ -3994,8 +3994,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-cipher"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "aes 0.8.4",
  "async-trait",
@@ -4007,8 +4007,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-common"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -4036,8 +4036,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-core"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "bcs",
  "bimap",
@@ -4062,8 +4062,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-deap"
-version = "0.1.0"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "async-trait",
  "futures",
@@ -4079,8 +4079,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-formats"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "bytes",
  "spansy",
@@ -4090,8 +4090,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-hmac-sha256"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "derive_builder 0.12.0",
  "futures",
@@ -4105,8 +4105,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-hmac-sha256-circuits"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "mpz-circuits",
  "tracing",
@@ -4114,8 +4114,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-key-exchange"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -4137,7 +4137,7 @@ dependencies = [
 [[package]]
 name = "tlsn-mpc-tls"
 version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "aes 0.8.4",
  "aes-gcm",
@@ -4178,8 +4178,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-prover"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "derive_builder 0.12.0",
  "futures",
@@ -4211,8 +4211,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-backend"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "async-trait",
  "futures",
@@ -4222,8 +4222,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-client"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "aes-gcm",
  "async-trait",
@@ -4244,8 +4244,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-client-async"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "bytes",
  "futures",
@@ -4257,8 +4257,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-core"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "futures",
  "hmac",
@@ -4304,8 +4304,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-verifier"
-version = "0.1.0-alpha.8"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.8#d8747d49e304fa7a39a682c4a78745fb325efd6c"
+version = "0.1.0-alpha.9-pre"
+source = "git+https://github.com/tlsnotary/tlsn?rev=00b88cb667c6ea6455f3e14f98dcaac6dead38f4#00b88cb667c6ea6455f3e14f98dcaac6dead38f4"
 dependencies = [
  "derive_builder 0.12.0",
  "futures",

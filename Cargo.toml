@@ -14,9 +14,9 @@ tokio-util = { version = "0.7" }
 tracing = { version = "0.1" }
 tracing-subscriber = { version = "0.3" }
 
-notary-client = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+notary-client = { git = "https://github.com/tlsnotary/tlsn", rev = "00b88cb667c6ea6455f3e14f98dcaac6dead38f4" }
 spansy = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "425614e" }
-tlsn-common = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
-tlsn-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
-tlsn-formats = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
-tlsn-prover = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+tlsn-common = { git = "https://github.com/tlsnotary/tlsn", rev = "00b88cb667c6ea6455f3e14f98dcaac6dead38f4" }
+tlsn-core = { git = "https://github.com/tlsnotary/tlsn", rev = "00b88cb667c6ea6455f3e14f98dcaac6dead38f4" }
+tlsn-formats = { git = "https://github.com/tlsnotary/tlsn", rev = "00b88cb667c6ea6455f3e14f98dcaac6dead38f4" }
+tlsn-prover = { git = "https://github.com/tlsnotary/tlsn", rev = "00b88cb667c6ea6455f3e14f98dcaac6dead38f4" }
