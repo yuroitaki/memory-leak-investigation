@@ -2,12 +2,13 @@
 // an HTTP request sent to example.com. The attestation and secrets are saved to
 // disk.
 
-use std::env;
+use std::{env, time::Duration};
 
 use http_body_util::Empty;
-use hyper::{Request, StatusCode, body::Bytes};
+use hyper::{Request, StatusCode, Version, body::Bytes};
 use hyper_util::rt::TokioIo;
 use spansy::Spanned;
+use tokio::task::JoinSet;
 use tokio_util::compat::{FuturesAsyncReadCompatExt, TokioAsyncReadCompatExt};
 
 use notary_client::{Accepted, NotarizationRequest, NotaryClient};
@@ -15,12 +16,12 @@ use tlsn_common::config::ProtocolConfig;
 use tlsn_core::{request::RequestConfig, transcript::TranscriptCommitConfig};
 use tlsn_formats::http::{DefaultHttpCommitter, HttpCommit, HttpTranscript};
 use tlsn_prover::{Prover, ProverConfig};
-use tracing::debug;
+use tracing::{Instrument, Level, debug, instrument, span};
 
 // Maximum number of bytes that can be sent from prover to server
-pub const MAX_SENT_DATA: usize = 1 << 12;
+pub const MAX_SENT_DATA: usize = 1 << 10;
 // Maximum number of bytes that can be received by prover from server
-pub const MAX_RECV_DATA: usize = 1 << 14;
+pub const MAX_RECV_DATA: usize = 1 << 12;
 
 // Setting of the application server
 const USER_AGENT: &str = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
@@ -29,23 +30,42 @@ const SERVER_DOMAIN: &str = "example.com";
 const SERVER_PORT: u16 = 443;
 const URI: &str = "/";
 
-const ATTEMPTS: u8 = 10;
+const THREADS: usize = 16;
+const ITERATIONS: u16 = 50;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt().with_max_level(Level::INFO).init();
 
-    for i in 1..=ATTEMPTS {
-        println!("");
-        println!("Attempt {i} of {ATTEMPTS}");
-        let _ = notarize(URI).await.map_err(|e| {
-            tracing::error!("{}", e);
-        });
+    tracing::info!("Starting {THREADS} threads for {ITERATIONS} iterations each...");
+
+    let mut threads = JoinSet::new();
+    for thread in 1..=THREADS {
+        threads.spawn(
+            async move {
+                for iteration in 1..=ITERATIONS {
+                    let span = span!(Level::INFO, "", iteration);
+                    let _enter = span.enter();
+
+                    let _ = notarize(URI).await.map_err(|e| {
+                        tracing::error!("{}", e);
+                    });
+
+                    tokio::time::sleep(Duration::from_secs(3)).await;
+                }
+            }
+            .instrument(span!(Level::INFO, "", thread)),
+        );
     }
+
+    threads.join_all().await;
+
+    // tokio::time::sleep(Duration::from_secs(15)).await;
 
     Ok(())
 }
 
+#[instrument()]
 async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
     let notary_host: String = env::var("NOTARY_HOST").unwrap_or("127.0.0.1".into());
     let notary_port: u16 = env::var("NOTARY_PORT")
@@ -125,6 +145,7 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     // Build a simple HTTP request with common headers
     let request_builder = Request::builder()
+        .version(Version::HTTP_10)
         .uri(uri)
         .header("Host", SERVER_DOMAIN)
         .header("Accept", "*/*")
@@ -137,12 +158,12 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let request = request_builder.body(Empty::<Bytes>::new())?;
 
-    println!("Starting an MPC TLS connection with the server");
+    tracing::info!("Starting an MPC TLS connection with the server");
 
     // Send the request to the server and wait for the response.
     let response = request_sender.send_request(request).await?;
 
-    println!("Got a response from the server: {}", response.status());
+    tracing::info!("Got a response from the server: {}", response.status());
 
     assert!(response.status() == StatusCode::OK);
 
@@ -182,7 +203,7 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let (attestation, secrets) = prover.finalize(&request_config).await?;
 
-    println!("Notarization complete!");
+    tracing::info!("Notarization complete!");
 
     // Write the attestation to disk.
     let attestation_path = "example-attestation.tlsn";
@@ -193,8 +214,8 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Write the secrets to disk.
     tokio::fs::write(&secrets_path, bincode::serialize(&secrets)?).await?;
 
-    println!("Notarization completed successfully!");
-    println!(
+    tracing::info!("Notarization completed successfully!");
+    tracing::info!(
         "The attestation has been written to `{attestation_path}` and the \
         corresponding secrets to `{secrets_path}`."
     );
