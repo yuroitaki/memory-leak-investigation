@@ -8,12 +8,14 @@ use http_body_util::Empty;
 use hyper::{Request, StatusCode, Version, body::Bytes};
 use hyper_util::rt::TokioIo;
 use spansy::Spanned;
+use tls_core::verify::WebPkiVerifier;
+use tls_server_fixture::CA_CERT_DER;
 use tokio::task::JoinSet;
 use tokio_util::compat::{FuturesAsyncReadCompatExt, TokioAsyncReadCompatExt};
 
 use notary_client::{Accepted, NotarizationRequest, NotaryClient};
 use tlsn_common::config::ProtocolConfig;
-use tlsn_core::{request::RequestConfig, transcript::TranscriptCommitConfig};
+use tlsn_core::{request::RequestConfig, transcript::TranscriptCommitConfig, CryptoProvider};
 use tlsn_formats::http::{DefaultHttpCommitter, HttpCommit, HttpTranscript};
 use tlsn_prover::{Prover, ProverConfig};
 use tracing::{Instrument, Level, debug, instrument, span};
@@ -26,44 +28,51 @@ pub const MAX_RECV_DATA: usize = 1 << 12;
 // Setting of the application server
 const USER_AGENT: &str = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
 
-const SERVER_DOMAIN: &str = "example.com";
-const SERVER_PORT: u16 = 443;
-const URI: &str = "/";
+const SERVER_DOMAIN: &str = "test-server.io";
+const SERVER_PORT: u16 = 3000;
+const URI: &str = "/formats/json";
 
 const THREADS: usize = 16;
-const ITERATIONS: u16 = 50;
+const ITERATIONS: u16 = 250;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt().with_max_level(Level::INFO).init();
+    // threads.join_all().await;
 
-    tracing::info!("Starting {THREADS} threads for {ITERATIONS} iterations each...");
+    for iteration in 1..=ITERATIONS {
+        // let span = span!(Level::INFO, "", iteration);
+        // let _enter = span.enter();
 
-    let mut threads = JoinSet::new();
-    for thread in 1..=THREADS {
-        threads.spawn(
-            async move {
-                for iteration in 1..=ITERATIONS {
-                    let span = span!(Level::INFO, "", iteration);
-                    let _enter = span.enter();
+        let _ = notarize(URI).await.map_err(|e| {
+            panic!("{}", e);
+        });
 
-                    let _ = notarize(URI).await.map_err(|e| {
-                        tracing::error!("{}", e);
-                    });
-
-                    tokio::time::sleep(Duration::from_secs(3)).await;
-                }
-            }
-            .instrument(span!(Level::INFO, "", thread)),
-        );
+        println!("Iteration {iteration} completed.");
+        tokio::time::sleep(Duration::from_secs(1)).await;
     }
-
-    threads.join_all().await;
 
     // tokio::time::sleep(Duration::from_secs(15)).await;
 
     Ok(())
 }
+
+/// crypto provider accepting the server-fixture's self-signed certificate
+///
+/// This is only required for offline testing with the server-fixture. In
+/// production, use `CryptoProvider::default()` instead.
+pub fn get_crypto_provider_with_server_fixture() -> CryptoProvider {
+    // custom root store with server-fixture
+    let mut root_store = tls_core::anchors::RootCertStore::empty();
+    root_store
+        .add(&tls_core::key::Certificate(CA_CERT_DER.to_vec()))
+        .unwrap();
+
+    CryptoProvider {
+        cert: WebPkiVerifier::new(root_store, None),
+        ..Default::default()
+    }
+}
+
 
 #[instrument()]
 async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
@@ -71,7 +80,7 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
     let notary_port: u16 = env::var("NOTARY_PORT")
         .map(|port| port.parse().expect("port should be valid integer"))
         .unwrap_or(7047);
-    let server_host: String = SERVER_DOMAIN.into();
+    let server_host: String = "127.0.0.1".into();
     let server_port: u16 = SERVER_PORT;
 
     // Build a client to connect to the notary server.
@@ -116,6 +125,7 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
                 .build()?,
         )
         // .crypto_provider(CryptoProvider::default())
+        .crypto_provider(get_crypto_provider_with_server_fixture())
         .build()?;
 
     // Create a new prover and perform necessary setup.
@@ -158,12 +168,12 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let request = request_builder.body(Empty::<Bytes>::new())?;
 
-    tracing::info!("Starting an MPC TLS connection with the server");
+    // tracing::info!("Starting an MPC TLS connection with the server");
 
     // Send the request to the server and wait for the response.
     let response = request_sender.send_request(request).await?;
 
-    tracing::info!("Got a response from the server: {}", response.status());
+    // tracing::info!("Got a response from the server: {}", response.status());
 
     assert!(response.status() == StatusCode::OK);
 
@@ -203,7 +213,7 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let (attestation, secrets) = prover.finalize(&request_config).await?;
 
-    tracing::info!("Notarization complete!");
+    // tracing::info!("Notarization complete!");
 
     // Write the attestation to disk.
     let attestation_path = "example-attestation.tlsn";
@@ -214,11 +224,11 @@ async fn notarize(uri: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Write the secrets to disk.
     tokio::fs::write(&secrets_path, bincode::serialize(&secrets)?).await?;
 
-    tracing::info!("Notarization completed successfully!");
-    tracing::info!(
-        "The attestation has been written to `{attestation_path}` and the \
-        corresponding secrets to `{secrets_path}`."
-    );
+    // tracing::info!("Notarization completed successfully!");
+    // tracing::info!(
+    //     "The attestation has been written to `{attestation_path}` and the \
+    //     corresponding secrets to `{secrets_path}`."
+    // );
 
     Ok(())
 }

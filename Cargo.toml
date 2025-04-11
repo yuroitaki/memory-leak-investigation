@@ -5,11 +5,12 @@ edition = "2024"
 
 [dependencies]
 bincode = { version = "1.3" }
+futures-util = { version = "0.3" }
 http-body-util = { version = "0.1" }
 hyper = { version = "1.1" }
 hyper-util = { version = "0.1" }
 serde_json = { version = "1.0" }
-tokio = { version = "1.38", features = ["macros"] }
+tokio = { version = "1.38", features = ["macros", "rt-multi-thread"] }
 tokio-util = { version = "0.7" }
 tracing = { version = "0.1" }
 tracing-subscriber = { version = "0.3" }
@@ -20,3 +21,8 @@ tlsn-common = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9
 tlsn-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
 tlsn-formats = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
 tlsn-prover = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
+tlsn-tls-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9"  }
+tls-server-fixture = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9"  }
+
+[profile.release]
+debug = true
