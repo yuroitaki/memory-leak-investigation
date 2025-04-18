@@ -32,24 +32,32 @@ const SERVER_DOMAIN: &str = "test-server.io";
 const SERVER_PORT: u16 = 3000;
 const URI: &str = "/formats/json";
 
-const THREADS: usize = 16;
-const ITERATIONS: u16 = 250;
+const THREADS: usize = 8;
+const ITERATIONS: u16 = 2500;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // threads.join_all().await;
 
-    for iteration in 1..=ITERATIONS {
-        // let span = span!(Level::INFO, "", iteration);
-        // let _enter = span.enter();
+    let mut threads = JoinSet::new();
+    for thread in 1..=THREADS {
+        threads.spawn(
+            async move {
+                for iteration in 1..=ITERATIONS {
+                    // let span = span!(Level::INFO, "", iteration);
+                    // let _enter = span.enter();
 
-        let _ = notarize(URI).await.map_err(|e| {
-            panic!("{}", e);
-        });
+                    let _ = notarize(URI).await.map_err(|e| {
+                        panic!("{}", e);
+                    });
 
-        println!("Iteration {iteration} completed.");
-        tokio::time::sleep(Duration::from_secs(1)).await;
+                    println!("Iteration {iteration} completed on thread {thread}",);
+                    tokio::time::sleep(Duration::from_secs(1)).await;
+                }
+            }
+        );
     }
+    threads.join_all().await;
 
     // tokio::time::sleep(Duration::from_secs(15)).await;
 
