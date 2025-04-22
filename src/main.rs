@@ -48,7 +48,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     // let _enter = span.enter();
 
                     let _ = notarize(URI).await.map_err(|e| {
-                        panic!("{}", e);
+                        eprintln!("{}", e);
                     });
 
                     println!("Iteration {iteration} completed on thread {thread}",);
