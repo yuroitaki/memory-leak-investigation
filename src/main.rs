@@ -32,8 +32,8 @@ const SERVER_DOMAIN: &str = "test-server.io";
 const SERVER_PORT: u16 = 3000;
 const URI: &str = "/formats/json";
 
-const THREADS: usize = 8;
-const ITERATIONS: u16 = 2500;
+const THREADS: usize = 16;
+const ITERATIONS: u16 = 500;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

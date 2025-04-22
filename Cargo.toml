@@ -15,14 +15,14 @@ tokio-util = { version = "0.7" }
 tracing = { version = "0.1" }
 tracing-subscriber = { version = "0.3" }
 
-notary-client = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
-spansy = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "6650a95" }
-tlsn-common = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
-tlsn-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
-tlsn-formats = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
-tlsn-prover = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9" }
-tlsn-tls-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9"  }
-tls-server-fixture = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.9"  }
+notary-client = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+spansy = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "425614e" }
+tlsn-common = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+tlsn-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+tlsn-formats = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+tlsn-prover = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8" }
+tlsn-tls-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8"  }
+tls-server-fixture = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.8"  }
 
 [profile.release]
 debug = true
